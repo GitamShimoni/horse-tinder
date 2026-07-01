@@ -1,0 +1,50 @@
+<!-- @dsCard group="Components" viewport="700x680" name="Patterns — ProfileCard, ProductCard, PhoneFrame" subtitle="Composed app surfaces" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; padding: 26px; font-family: var(--font-body); background: var(--bg-app); }
+  .canvas { background: var(--grad-app-glow); display: flex; gap: 26px; align-items: flex-start; flex-wrap: wrap; }
+  .stack { display: flex; flex-direction: column; gap: 16px; width: 300px; }
+</style>
+</head>
+<body>
+<div id="root" class="canvas"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+  const { ProfileCard, ProductCard, PhoneFrame, IconButton } = window.Horse_7cfa43;
+  function Demo() {
+    return (
+      <>
+        <div style={{width:300}}>
+          <ProfileCard
+            emoji="🐴" name="Storm" age={6} horseAge={42}
+            distance="2 miles away" location="Next Barn Over" verified
+            tags={[{emoji:'🌾',label:'Organic Hay Only'},{emoji:'🏎️',label:'1 HP'},{emoji:'🚫',label:'Hates Flies'}]}
+            bio="Looking for a stable relationship. No horsing around. Must love long trots on the beach." />
+          <div style={{display:'flex',justifyContent:'center',gap:14,marginTop:16}}>
+            <IconButton icon="x" tone="nope" size="lg" label="Nope" />
+            <IconButton icon="zap" tone="super" label="Super" />
+            <IconButton icon="heart" tone="love" size="lg" label="Like" />
+          </div>
+        </div>
+        <div className="stack">
+          <ProductCard emoji="🐴" name="Smart Horseshoe Pro" blurb="Bluetooth step tracking + heart-rate monitor." price="$399" tone="gold" />
+          <ProductCard emoji="🍾" name="First-Date Hay-Champagne" blurb="Organic bubbling hay extract." price="$88" tone="emerald" badge="NEW" />
+        </div>
+        <PhoneFrame width={200}>
+          <div style={{height:'100%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:60,background:'var(--grad-app-glow)'}}>🐎</div>
+        </PhoneFrame>
+      </>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

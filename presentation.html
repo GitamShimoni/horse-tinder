@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Horse Before Hoes — Trotr</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Space+Mono:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  :root {
+    --slate-950: #060a15;
+    --slate-900: #0b1120;
+    --slate-850: #0f172a;
+    --slate-800: #1e293b;
+    --slate-700: #334155;
+    --slate-600: #475569;
+    --slate-500: #64748b;
+    --slate-400: #94a3b8;
+    --slate-300: #cbd5e1;
+    --slate-200: #e2e8f0;
+    --slate-100: #f1f5f9;
+    --white: #ffffff;
+
+    --neon-pink: #ff2d78;
+    --neon-rose: #ff4d8d;
+    --neon-orange: #ff7a18;
+    --neon-amber: #ff9d3c;
+
+    --gold-400: #fcd34d;
+    --gold-500: #f5b524;
+    --gold-600: #d99413;
+
+    --emerald-300: #6ee7b7;
+    --emerald-400: #34d399;
+    --emerald-500: #10b981;
+    --emerald-600: #059669;
+
+    --sky-400: #38bdf8;
+
+    --bg-app: var(--slate-950);
+    --text-strong: var(--slate-100);
+    --text-body: var(--slate-300);
+    --text-muted: var(--slate-400);
+    --text-faint: var(--slate-500);
+
+    --border-subtle: rgba(148, 163, 184, 0.12);
+    --border-hairline: rgba(148, 163, 184, 0.18);
+    --border-strong: rgba(148, 163, 184, 0.28);
+
+    --grad-dating: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-orange) 100%);
+    --grad-gold: linear-gradient(135deg, var(--gold-400) 0%, var(--gold-600) 100%);
+    --grad-emerald: linear-gradient(135deg, var(--emerald-300) 0%, var(--emerald-600) 100%);
+
+    --surface-card: rgba(30, 41, 59, 0.55);
+    --surface-glass-strong: rgba(15, 23, 42, 0.72);
+
+    --glow-pink: rgba(255, 45, 120, 0.55);
+    --glow-orange: rgba(255, 122, 24, 0.5);
+    --glow-gold: rgba(245, 181, 36, 0.5);
+    --glow-emerald: rgba(52, 211, 153, 0.5);
+
+    --font-display: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Space Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg-app);
+    color: var(--text-body);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100vh;
+  }
+
+  ::selection { background: var(--neon-pink); color: white; }
+
+  [dir-ltr], .ltr { direction: ltr; unicode-bidi: isolate; }
+
+  .gradient-text {
+    background: var(--grad-dating);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: var(--grad-dating);
+  }
+
+  .slide {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 40px 8vw;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glow-canvas {
+    background: var(--bg-app);
+  }
+  .glow-a { background: radial-gradient(60% 50% at 15% 0%, rgba(255,45,120,0.18), rgba(6,10,21,0) 55%), var(--bg-app); }
+  .glow-b { background: radial-gradient(55% 45% at 90% 100%, rgba(255,122,24,0.16), rgba(6,10,21,0) 55%), var(--bg-app); }
+  .glow-c { background: radial-gradient(55% 45% at 90% 10%, rgba(245,181,36,0.13), rgba(6,10,21,0) 55%), radial-gradient(60% 50% at 5% 100%, rgba(52,211,153,0.12), rgba(6,10,21,0) 55%), var(--bg-app); }
+  .glow-d { background: radial-gradient(60% 50% at 50% 0%, rgba(255,45,120,0.16), rgba(6,10,21,0) 55%), var(--bg-app); }
+
+  .glass {
+    background: var(--surface-card);
+    border: 1px solid var(--border-hairline);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .slide-number {
+    position: fixed;
+    top: 28px;
+    left: 8vw;
+    z-index: 10;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+  .slide-number strong { color: var(--text-strong); }
+
+  .brand-tag {
+    position: fixed;
+    top: 26px;
+    right: 8vw;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--text-strong);
+    direction: ltr;
+  }
+
+  .dot-nav {
+    position: fixed;
+    left: 26px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .dot-nav button {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.25s ease;
+  }
+  .dot-nav button.active {
+    background: var(--grad-dating);
+    border-color: transparent;
+    height: 22px;
+    box-shadow: 0 0 12px var(--glow-pink);
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); margin: 0; color: var(--text-strong); }
+
+  .display-title {
+    font-size: clamp(40px, 6vw, 76px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+
+  .section-title {
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+  }
+
+  .lede {
+    font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.65;
+    color: var(--text-body);
+  }
+
+  .tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    direction: ltr;
+    text-align: center;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(148,163,184,0.1);
+    border: 1px solid var(--border-hairline);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-body);
+    white-space: nowrap;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    direction: ltr;
+  }
+  .badge-emerald { background: var(--grad-emerald); color: #04231a; }
+  .badge-neon { background: var(--grad-dating); color: #fff; }
+  .badge-gold { background: var(--grad-gold); color: #2a1c02; }
+
+  footer.deck-footer {
+    position: fixed;
+    bottom: 22px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 10;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    pointer-events: none;
+  }
+
+  /* ---------- Slide 1 : Title ---------- */
+  #slide-1 {
+    background: #050810;
+  }
+  .title-bg-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.34;
+    filter: saturate(1.15) contrast(1.05);
+  }
+  .title-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(80% 60% at 50% 100%, rgba(6,10,21,0.95) 10%, rgba(6,10,21,0.55) 45%, rgba(6,10,21,0.15) 70%),
+      linear-gradient(180deg, rgba(6,10,21,0.55) 0%, rgba(6,10,21,0.15) 30%, rgba(6,10,21,0.85) 100%);
+  }
+  .title-mark {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 22px;
+  }
+  .hero-hearts {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.5;
+    filter: drop-shadow(0 0 10px var(--glow-pink));
+  }
+
+  /* ---------- feature / flow cards ---------- */
+  .card {
+    border-radius: 22px;
+    padding: 26px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  }
+
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .flow-step {
+    position: relative;
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+  .flow-step .num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-faint);
+    direction: ltr;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .flow-step .emoji {
+    font-size: 30px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .flow-step h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .flow-step p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .flow-arrow {
+    display: none;
+  }
+
+  /* ---------- Profile card (slide: meet the herd) ---------- */
+  .meet-grid {
+    display: grid;
+    grid-template-columns: 0.86fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .profile-card {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    margin-inline-start: auto;
+    border-radius: 30px;
+    overflow: hidden;
+    background: var(--slate-800);
+    border: 1px solid var(--border-hairline);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.6), 0 0 90px -30px var(--glow-pink);
+    direction: ltr;
+  }
+  .profile-hero {
+    position: relative;
+    aspect-ratio: 3/4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(130% 100% at 50% 15%, rgba(255,45,120,0.4), rgba(255,122,24,0.18) 45%, rgba(11,17,32,0.92) 80%);
+    font-size: 108px;
+  }
+  .profile-hero .verified {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+  }
+  .profile-hero .shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6,10,21,0.97) 6%, rgba(6,10,21,0.55) 34%, rgba(6,10,21,0) 62%);
+  }
+  .profile-hero .name-block {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 14px;
+  }
+  .profile-hero .name-block h3 {
+    font-size: 30px;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .profile-hero .name-block h3 span { font-weight: 400; color: var(--slate-200); }
+  .profile-hero .meta {
+    font-size: 12px;
+    color: var(--slate-300);
+    margin-top: 6px;
+  }
+  .profile-body { padding: 16px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(148,163,184,0.1);
+    border: 1px solid var(--border-hairline);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-body);
+    white-space: nowrap;
+  }
+  .profile-bio {
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--text-body);
+    margin: 0;
+  }
+  .profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .icon-btn {
+    width: 42px; height: 42px;
+    border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    background: var(--surface-glass-strong);
+    border: 1.5px solid var(--border-strong);
+  }
+
+  /* ---------- Color swatches ---------- */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .swatch {
+    border-radius: 18px;
+    padding: 16px;
+    height: 108px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border: 1px solid var(--border-hairline);
+  }
+  .swatch .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.92);
+    direction: ltr;
+    text-align: left;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  .type-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    direction: ltr;
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-sample { font-size: 26px; color: var(--text-strong); }
+  .type-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); min-width: 210px; }
+
+  /* ---------- Feature list (slide: personality) ---------- */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .feat-card {
+    border-radius: 20px;
+    padding: 22px;
+  }
+  .feat-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    background: rgba(148,163,184,0.1);
+    border: 1px solid var(--border-hairline);
+    margin-bottom: 14px;
+  }
+  .feat-card h3 { font-size: 17px; margin-bottom: 6px; }
+  .feat-card p { font-size: 13px; line-height: 1.55; color: var(--text-muted); margin: 0; }
+
+  .chat-bubble-row { display: flex; flex-direction: column; gap: 8px; direction: ltr; }
+  .chat-bubble {
+    align-self: flex-start;
+    max-width: 78%;
+    padding: 10px 14px;
+    border-radius: 18px 18px 18px 5px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-hairline);
+    font-size: 13px;
+    color: var(--text-strong);
+  }
+
+  /* ---------- Stack slide ---------- */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .stat-row { display: flex; gap: 28px; margin-top: 26px; flex-wrap: wrap; }
+  .stat { direction: ltr; text-align: left; }
+  .stat .num {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 700;
+    background: var(--grad-dating);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+  }
+  .stat .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .file-tree {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.9;
+    color: var(--text-muted);
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+  }
+  .file-tree .hi { color: var(--text-strong); font-weight: 700; }
+
+  /* ---------- Closing ---------- */
+  #slide-9 { text-align: center; }
+  .closing-tag {
+    font-size: clamp(20px, 2.4vw, 30px);
+    max-width: 720px;
+    margin: 22px auto 0;
+    color: var(--text-strong);
+  }
+
+  @media (max-width: 900px) {
+    .flow-grid, .meet-grid, .stack-grid, .feat-grid, .swatch-grid { grid-template-columns: 1fr; }
+    .profile-card { margin: 0 auto; }
+    .dot-nav { display: none; }
+    .slide { padding: 90px 6vw 60px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="slide-number"><strong id="cur">01</strong> / 09</div>
+  <div class="brand-tag">
+    <svg width="22" height="22" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="tg" x1="20" y1="14" x2="100" y2="106" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ff2d78"></stop><stop offset="1" stop-color="#ff7a18"></stop>
+      </linearGradient></defs>
+      <path d="M38 96 C 20 82, 20 40, 60 22 C 100 40, 100 82, 82 96" stroke="url(#tg)" stroke-width="15" stroke-linecap="round" fill="none"></path>
+      <circle cx="30" cy="60" r="4" fill="#ff2d78"></circle><circle cx="34" cy="80" r="4" fill="#ff4a6f"></circle>
+      <circle cx="90" cy="60" r="4" fill="#ff7a18"></circle><circle cx="86" cy="80" r="4" fill="#ff8f3c"></circle>
+    </svg>
+    Trotr
+  </div>
+
+  <div class="dot-nav" id="dotNav"></div>
+
+  <!-- SLIDE 1 — TITLE -->
+  <section class="slide" id="slide-1">
+    <img class="title-bg-media" src="assets/Create_a_short_cinematic_video-ezgif.com-optimize.gif" alt="" />
+    <div class="title-bg-overlay"></div>
+    <div class="slide-inner" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;"><span></span>קונספט · מיזם האקתון · 2026</div>
+      <h1 class="display-title" style="margin-top:22px;">Horse Before Hoes</h1>
+      <p class="lede" style="max-width:620px; margin:22px auto 0; font-size:19px;">
+        אתר היכרויות לסוסים — קונספט הומוריסטי עם מראה פרימיום
+      </p>
+      <p class="tagline gradient-text" style="font-size:clamp(20px,2.6vw,30px); margin-top:26px;">
+        “Tinder, but for horses.”
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — WHAT WE BUILT -->
+  <section class="slide glow-canvas glow-a" id="slide-2">
+    <div class="slide-inner">
+      <div class="eyebrow">מה בנינו</div>
+      <h2 class="section-title" style="margin-top:16px; max-width:780px;">
+        קונספט לאתר היכרויות לסוסים, שמשלב הומור עם עיצוב פרימיום.
+      </h2>
+      <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:40px; margin-top:40px; align-items:start;">
+        <p class="lede">
+          יצרנו עולם ויזואלי שלם של דייטינג לסוסים: סוס סייבר־רומנטי, אורווה עתידנית,
+          לבבות ניאון, אנימציות רקע וסצנות פלרטוט מצחיקות. כל מסך נבנה כך שהוא ייראה
+          כמו מוצר אמיתי — אבל הרעיון שמאחוריו הוא לגמרי אבסורדי.
+        </p>
+        <div class="glass card">
+          <div class="eyebrow" style="margin-bottom:10px;">המטרה</div>
+          <p style="margin:0; font-size:15px; line-height:1.65; color:var(--text-strong);">
+            אתר שנראה <strong>רציני, יוקרתי ומושקע</strong> — אבל עם רעיון
+            <strong style="color:var(--neon-amber);"> מצחיק ומופרך</strong> בבסיסו.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — THE EXPERIENCE -->
+  <section class="slide glow-canvas glow-b" id="slide-3">
+    <div class="slide-inner" style="text-align:center;">
+      <div class="eyebrow" style="justify-content:center;">החוויה</div>
+      <h2 class="section-title" style="margin-top:16px; max-width:820px; margin-inline:auto;">
+        שילוב בין עיצוב אלגנטי להומור טיפשי — <span class="gradient-text">בכוונה.</span>
+      </h2>
+      <p class="lede" style="max-width:640px; margin:22px auto 0;">
+        המשתמש נכנס לעולם שבו סוסים רצים לדייט, עושים פוזות, קורצים,
+        ומחפשים אהבה באורווה הכי סטייל שיש.
+      </p>
+      <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:32px;">
+        <span class="pill">😂 מצחיק</span>
+        <span class="pill">💘 רומנטי</span>
+        <span class="pill">🎭 מוגזם</span>
+        <span class="pill">✨ נראה כמו מותג אמיתי</span>
+      </div>
+      <div class="glass card" style="max-width:640px; margin:44px auto 0; padding:30px;">
+        <p class="tagline" style="font-size:clamp(17px,1.8vw,21px); color:var(--text-strong); margin:0;">
+          “A premium dating experience…<br/>for horses who take love very seriously.”
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — MEET THE HERD -->
+  <section class="slide glow-canvas glow-a" id="slide-4">
+    <div class="slide-inner">
+      <div class="meet-grid">
+        <div class="profile-card">
+          <div class="profile-hero">
+            🐴
+            <span class="verified badge badge-emerald">🛡 Verified Stud</span>
+            <div class="shade"></div>
+            <div class="name-block">
+              <h3>BoJack <span>9</span></h3>
+              <div class="meta">📍 2 miles away · The Next Barn Over</div>
+            </div>
+          </div>
+          <div class="profile-body">
+            <div class="tag-row">
+              <span class="tag">🌾 Gluten-Free Hay Only</span>
+              <span class="tag">🏎️ 1 HP (Physically &amp; Emotionally)</span>
+              <span class="tag">🥃 Existential Dread</span>
+            </div>
+            <p class="profile-bio">
+              "Looking for a stable relationship, but honestly? I have a lot of baggage
+              and a Netflix deal. No horsing around."
+            </p>
+          </div>
+          <div class="profile-actions" style="padding-bottom:18px;">
+            <div class="icon-btn" style="color:var(--slate-300);">✕</div>
+            <div class="icon-btn" style="color:var(--sky-400);">⚡</div>
+            <div class="icon-btn" style="color:var(--neon-pink);">♥</div>
+          </div>
+        </div>
+        <div>
+          <div class="eyebrow">הקאסט</div>
+          <h2 class="section-title" style="margin-top:16px;">להכיר את העדר.</h2>
+          <p class="lede" style="margin-top:18px;">
+            שישה פרופילים מלאים — כל אחד עם שם, גיל (וגם "גיל בשנות סוס"), מרחק,
+            תגית "מאומת", תגי אופי ובָּיו אירוני משלו. כל כרטיס הוא בדיחה
+            עצמאית שבנויה כמו פרופיל דייטינג אמיתי לחלוטין.
+          </p>
+          <div class="stat-row" style="margin-top:28px;">
+            <div class="stat"><div class="num">6</div><div class="label">horse profiles</div></div>
+            <div class="stat"><div class="num">3</div><div class="label">tags each</div></div>
+            <div class="stat"><div class="num">1</div><div class="label">match, guaranteed</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — HOW IT WORKS -->
+  <section class="slide glow-canvas glow-d" id="slide-5">
+    <div class="slide-inner">
+      <div class="eyebrow">איך זה עובד</div>
+      <h2 class="section-title" style="margin-top:16px;">מסע המשתמש, בארבע תחנות.</h2>
+      <div class="flow-grid" style="margin-top:40px;">
+        <div class="flow-step glass">
+          <span class="num">01</span>
+          <span class="emoji">🏠</span>
+          <h3>Hero</h3>
+          <p>"Find your mane match" — נחיתה מרשימה עם כפתור "Start Swiping".</p>
+        </div>
+        <div class="flow-step glass">
+          <span class="num">02</span>
+          <span class="emoji">👉</span>
+          <h3>Swipe</h3>
+          <p>גלילה של כרטיסי סוסים, לייק / נופ / סופר-ניי'ה — במגע או בכפתורים.</p>
+        </div>
+        <div class="flow-step glass">
+          <span class="num">03</span>
+          <span class="emoji">💥</span>
+          <h3>Match</h3>
+          <p>"It's a Match!" — פופ-אפ עם זוהר ניאון בלייק השלישי.</p>
+        </div>
+        <div class="flow-step glass">
+          <span class="num">04</span>
+          <span class="emoji">💬</span>
+          <h3>Chat</h3>
+          <p>צ'אט חי עם "בוט סוס" שעונה תשובות אקראיות אחרי שנייה.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — DESIGN SYSTEM -->
+  <section class="slide glow-canvas glow-c" id="slide-6">
+    <div class="slide-inner">
+      <div class="eyebrow">שפה ויזואלית</div>
+      <h2 class="section-title" style="margin-top:16px;">מערכת עיצוב בהשראת אפליקציות דייטינג פרימיום.</h2>
+
+      <div class="swatch-grid" style="margin-top:32px;">
+        <div class="swatch" style="background:linear-gradient(135deg,#ff2d78,#ff7a18);">
+          <span class="label">Neon Dating<br/>#ff2d78 → #ff7a18</span>
+        </div>
+        <div class="swatch" style="background:linear-gradient(135deg,#fcd34d,#d99413);">
+          <span class="label" style="color:#2a1c02; text-shadow:none;">Gold Premium<br/>#f5b524</span>
+        </div>
+        <div class="swatch" style="background:linear-gradient(135deg,#6ee7b7,#059669);">
+          <span class="label" style="color:#04231a; text-shadow:none;">Emerald Verified<br/>#10b981</span>
+        </div>
+        <div class="swatch" style="background:var(--slate-900); border:1px solid var(--border-hairline);">
+          <span class="label">Slate Canvas<br/>#060a15</span>
+        </div>
+      </div>
+
+      <div style="margin-top:36px;">
+        <div class="type-row">
+          <span class="type-label">Space Grotesk — display</span>
+          <span class="type-sample" style="font-family:'Space Grotesk';font-weight:700;">Find your mane match</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Plus Jakarta Sans — body</span>
+          <span class="type-sample" style="font-family:'Plus Jakarta Sans';font-weight:500; font-size:18px;">No riders, no drama, no low-grade oats.</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Space Mono — labels</span>
+          <span class="type-sample" style="font-family:'Space Mono'; font-size:15px;">© 2026 Trotr · No horsing around</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — PERSONALITY & HUMOR -->
+  <section class="slide glow-canvas glow-a" id="slide-7">
+    <div class="slide-inner">
+      <div class="eyebrow">אישיות ההומור</div>
+      <h2 class="section-title" style="margin-top:16px;">עיצוב רציני, כתיבה בדיחה.</h2>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:36px; align-items:start;">
+        <div class="feat-grid" style="grid-template-columns:1fr; gap:14px;">
+          <div class="feat-card glass">
+            <div class="feat-icon" style="color:var(--emerald-400);">🛡️</div>
+            <h3>Verified Studs</h3>
+            <p>"Every profile is barn-checked and hoof-manicured." — אמינות, בציניות.</p>
+          </div>
+          <div class="feat-card glass">
+            <div class="feat-icon" style="color:var(--sky-400);">⚡</div>
+            <h3>Super Neigh</h3>
+            <p>"Let them hear it across three paddocks." — פיצ'ר פרימיום, בקול רם.</p>
+          </div>
+          <div class="feat-card glass">
+            <div class="feat-icon" style="color:var(--gold-400);">👑</div>
+            <h3>Neigh-Premium</h3>
+            <p>"A complimentary First-Date Hay-Champagne on us." — סאבסקריפשן שמרגיש אמיתי.</p>
+          </div>
+        </div>
+        <div>
+          <div class="eyebrow" style="margin-bottom:14px;">מהצ'אט האוטומטי</div>
+          <div class="chat-bubble-row">
+            <div class="chat-bubble">Neigh! 🐴</div>
+            <div class="chat-bubble">Do you have a sugar cube? 🧊</div>
+            <div class="chat-bubble">I'm not looking for a one-night trot.</div>
+            <div class="chat-bubble">Hold your horses, I'm blushing. 😳</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 — BUILT IN A HACKATHON -->
+  <section class="slide glow-canvas glow-b" id="slide-8">
+    <div class="slide-inner">
+      <div class="eyebrow">מאחורי הקלעים</div>
+      <h2 class="section-title" style="margin-top:16px;">נבנה בהאקתון של שעתיים.</h2>
+      <div class="stack-grid" style="margin-top:32px;">
+        <div>
+          <p class="lede">
+            MVP פרונט-אנד בלבד, ללא בק-אנד — כל הדאטה קשיחה בקוד, בכוונה,
+            כדי למקסם מהירות בנייה ולהשאיר את כל תשומת הלב לחוויה ולעיצוב.
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:24px;">
+            <span class="pill ltr">⚛️ React + TypeScript</span>
+            <span class="pill ltr">⚡ Vite</span>
+            <span class="pill ltr">🎨 Tailwind CSS</span>
+            <span class="pill ltr">👉 react-tinder-card</span>
+            <span class="pill ltr">☁️ Cloudflare Pages</span>
+          </div>
+        </div>
+        <div class="glass card">
+          <div class="file-tree">index.html
+src/
+  main.tsx
+  App.tsx              <span class="hi"># hero → swipe → chat</span>
+  data/horses.ts        <span class="hi"># 6 profiles</span>
+  components/
+    ProfileCard.tsx
+    MatchModal.tsx
+  views/
+    HeroView.tsx
+    SwipeView.tsx        <span class="hi"># match on 3rd like</span>
+    ChatView.tsx         <span class="hi"># 1s auto-reply</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9 — CLOSING -->
+  <section class="slide glow-canvas glow-d" id="slide-9">
+    <div class="slide-inner">
+      <svg width="72" height="72" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 24px; display:block;">
+        <defs><linearGradient id="tg2" x1="20" y1="14" x2="100" y2="106" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#ff2d78"></stop><stop offset="1" stop-color="#ff7a18"></stop>
+        </linearGradient></defs>
+        <path d="M38 96 C 20 82, 20 40, 60 22 C 100 40, 100 82, 82 96" stroke="url(#tg2)" stroke-width="15" stroke-linecap="round" fill="none"></path>
+        <circle cx="30" cy="60" r="4" fill="#ff2d78"></circle><circle cx="34" cy="80" r="4" fill="#ff4a6f"></circle>
+        <circle cx="90" cy="60" r="4" fill="#ff7a18"></circle><circle cx="86" cy="80" r="4" fill="#ff8f3c"></circle>
+      </svg>
+      <h2 class="section-title gradient-text">Trotr</h2>
+      <p class="closing-tag">
+        A premium dating experience… for horses who take love very seriously.
+      </p>
+      <p style="margin-top:28px; font-family:var(--font-mono); font-size:12px; color:var(--text-faint); letter-spacing:0.06em; direction:ltr;">
+        © 2026 Trotr · No horsing around
+      </p>
+    </div>
+  </section>
+
+  <footer class="deck-footer">↑ ↓ לניווט בין השקופיות</footer>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotNav = document.getElementById('dotNav');
+  const curEl = document.getElementById('cur');
+
+  slides.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'slide ' + (i + 1));
+    b.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth' }));
+    dotNav.appendChild(b);
+  });
+  const dots = Array.from(dotNav.children);
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        const idx = slides.indexOf(e.target);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        curEl.textContent = String(idx + 1).padStart(2, '0');
+      }
+    });
+  }, { threshold: 0.6 });
+  slides.forEach((s) => io.observe(s));
+
+  document.addEventListener('keydown', (e) => {
+    const idx = dots.findIndex((d) => d.classList.contains('active'));
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault();
+      if (idx < slides.length - 1) slides[idx + 1].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      if (idx > 0) slides[idx - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+</body>
+</html>

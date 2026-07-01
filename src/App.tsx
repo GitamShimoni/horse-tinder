@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Horse, View } from "./types";
 import HeroView from "./views/HeroView";
+import RegisterView from "./views/RegisterView";
 import SwipeView from "./views/SwipeView";
 import ChatView from "./views/ChatView";
 
@@ -14,7 +15,11 @@ export default function App() {
   };
 
   if (view === "hero") {
-    return <HeroView onStart={() => setView("swipe")} />;
+    return <HeroView onStart={() => setView("register")} />;
+  }
+
+  if (view === "register") {
+    return <RegisterView onComplete={() => setView("swipe")} onBack={() => setView("hero")} />;
   }
 
   if (view === "chat" && match) {

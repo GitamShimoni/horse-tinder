@@ -20,7 +20,7 @@ export interface Horse {
   tags: HorseTag[];
 }
 
-export type View = "hero" | "swipe" | "chat";
+export type View = "hero" | "register" | "swipe" | "chat";
 
 export interface ChatMessage {
   id: number;

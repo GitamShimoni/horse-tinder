@@ -1,0 +1,71 @@
+/* ============================================================
+   TROTR — base layer + a few brand utility classes.
+   Kept light so it composes cleanly into consuming pages.
+   ============================================================ */
+
+/* Brand-y defaults that are safe to inherit */
+.trotr-root,
+[data-trotr] {
+  font-family: var(--font-body);
+  color: var(--text-body);
+  background: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* App canvas with the signature top glow */
+.trotr-canvas {
+  background:
+    var(--grad-app-glow),
+    var(--bg-app);
+  min-height: 100%;
+}
+
+/* Glass surface helper */
+.trotr-glass {
+  background: var(--surface-card);
+  border: 1px solid var(--border-hairline);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+/* Gradient text (brand wordmark, headings) */
+.trotr-gradient-text {
+  background: var(--grad-dating);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.trotr-gradient-text--gold {
+  background: var(--grad-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.trotr-gradient-text--emerald {
+  background: var(--grad-emerald);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Eyebrow / uppercase label */
+.trotr-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+@keyframes trotr-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes trotr-pulse-glow {
+  0%, 100% { box-shadow: var(--glow-ring-pink); }
+  50% { box-shadow: 0 0 0 1px rgba(255,45,120,0.6), 0 10px 40px rgba(255,45,120,0.55); }
+}

@@ -1,0 +1,44 @@
+/* ============================================================
+   TROTR — TYPOGRAPHY TOKENS
+   Display: Space Grotesk (geometric, techy)
+   Body:    Plus Jakarta Sans (humanist, friendly-premium)
+   Mono:    Space Mono (playful spec text / prices)
+   ============================================================ */
+:root {
+  /* Families */
+  --font-display: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Weights */
+  --fw-light: 300;      /* @kind font */
+  --fw-regular: 400;    /* @kind font */
+  --fw-medium: 500;     /* @kind font */
+  --fw-semibold: 600;   /* @kind font */
+  --fw-bold: 700;       /* @kind font */
+  --fw-extrabold: 800;  /* @kind font */
+
+  /* Type scale (fluid-friendly px values) */
+  --fs-display: 44px;   /* hero / brand wordmark */
+  --fs-h1: 32px;
+  --fs-h2: 24px;
+  --fs-h3: 19px;
+  --fs-title: 17px;     /* card titles */
+  --fs-body: 15px;
+  --fs-sm: 13px;
+  --fs-xs: 11px;
+  --fs-micro: 10px;     /* uppercase eyebrows */
+
+  /* Line heights */
+  --lh-tight: 1.05;     /* @kind font */
+  --lh-snug: 1.2;       /* @kind font */
+  --lh-normal: 1.5;     /* @kind font */
+  --lh-relaxed: 1.65;   /* @kind font */
+
+  /* Letter spacing */
+  --ls-tight: -0.03em;    /* @kind font */
+  --ls-snug: -0.015em;    /* @kind font */
+  --ls-normal: 0;         /* @kind font */
+  --ls-wide: 0.04em;      /* @kind font */
+  --ls-eyebrow: 0.16em;   /* @kind font */
+}
