@@ -5,9 +5,8 @@ import { horses } from "../data/horses";
 import type { Horse } from "../types";
 import ProfileCard from "../components/ProfileCard";
 import MatchModal from "../components/MatchModal";
-import ShopSkeleton from "../components/ShopSkeleton";
 import Icon from "../components/Icon";
-import { IconButton, Tabs, Button } from "../components/ui";
+import { IconButton, Button } from "../components/ui";
 
 type Direction = "left" | "right" | "up" | "down";
 
@@ -22,10 +21,10 @@ const MATCH_ON_LIKE = 3;
 
 interface Props {
   onMatch: (horse: Horse) => void;
+  onHome: () => void;
 }
 
-export default function SwipeView({ onMatch }: Props) {
-  const [tab, setTab] = useState("feed");
+export default function SwipeView({ onMatch, onHome }: Props) {
   const [currentIndex, setCurrentIndex] = useState(horses.length - 1);
   const [matched, setMatched] = useState<Horse | null>(null);
   const [superFlash, setSuperFlash] = useState(false);
@@ -86,210 +85,159 @@ export default function SwipeView({ onMatch }: Props) {
     childRefs.forEach((ref) => ref.current?.restoreCard());
   };
 
+  const bold = "var(--fw-bold)" as CSSProperties["fontWeight"];
+
   return (
     <div
-      className="trotr-canvas"
+      className="trotr-canvas trotr-play"
       style={{
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        width: "100%",
+        background:
+          "radial-gradient(60% 45% at 12% -5%, rgba(255,45,120,0.16), rgba(6,10,21,0) 55%)," +
+          "radial-gradient(65% 55% at 88% 105%, rgba(255,122,24,0.16), rgba(6,10,21,0) 55%)," +
+          "var(--bg-app)",
       }}
     >
-      {/* Header */}
-      <header
+      {/* Minimal brand (click = home) */}
+      <button
+        onClick={onHome}
+        aria-label="Back to home"
         style={{
-          display: "flex",
+          position: "absolute",
+          top: 22,
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "inline-flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          padding: "18px 20px 4px",
+          gap: 8,
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <img src="/brand/trotr-mark.svg" alt="" width={24} height={24} />
-          <span
-            className="trotr-gradient-text"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: "var(--fw-bold)" as CSSProperties["fontWeight"],
-              fontSize: 20,
-              letterSpacing: "var(--ls-tight)",
-            }}
-          >
-            Trotr
-          </span>
-        </div>
-        <div style={{ display: "flex", gap: 14, color: "var(--text-muted)" }}>
-          <Icon name="bell" size={19} />
-          <Icon name="settings" size={19} />
-        </div>
-      </header>
+        <img src="/brand/trotr-mark.svg" alt="" width={22} height={22} />
+        <span
+          className="trotr-gradient-text"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontWeight: bold,
+            fontSize: 19,
+            letterSpacing: "var(--ls-tight)",
+          }}
+        >
+          Trotr
+        </span>
+      </button>
 
-      {/* Tabs — Shop is a non-functional skeleton */}
-      <div style={{ display: "flex", justifyContent: "center", padding: "6px 0 10px" }}>
-        <Tabs
-          value={tab}
-          onChange={setTab}
-          items={[
-            { id: "feed", label: "Dating", icon: "flame" },
-            { id: "shop", label: "Shop", icon: "store" },
-          ]}
-        />
-      </div>
-
-      {tab === "shop" ? (
-        <ShopSkeleton />
-      ) : (
-        <>
-          {/* Card deck */}
-          <div
-            style={{
-              position: "relative",
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "4px 18px 0",
-              minHeight: 0,
-            }}
-          >
-            {currentIndex < 0 ? (
-              <div
-                className="trotr-glass"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
-                  width: "100%",
-                  maxWidth: 360,
-                  padding: "48px 28px",
-                  borderRadius: "var(--radius-xl)",
-                }}
-              >
-                <span style={{ fontSize: 52 }}>🌾</span>
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    color: "var(--text-strong)",
-                    fontSize: 18,
-                    marginTop: 12,
-                  }}
-                >
-                  You&apos;ve trotted through everyone
-                </div>
-                <p style={{ fontSize: 13, lineHeight: 1.5, marginTop: 6, color: "var(--text-muted)" }}>
-                  Check back after the next hay delivery for fresh stallions &amp; mares.
-                </p>
-                <Button onClick={restart} iconLeft="rotateCcw" style={{ marginTop: 20 }}>
-                  Start over
-                </Button>
-              </div>
-            ) : (
-              horses.map((horse, index) => (
-                <TinderCard
-                  ref={childRefs[index]}
-                  className="swipe"
-                  key={horse.id}
-                  onSwipe={(dir) => swiped(dir as Direction, index)}
-                  onCardLeftScreen={() => outOfFrame(index)}
-                  preventSwipe={["down"]}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "0 18px",
-                    }}
-                  >
-                    <ProfileCard horse={horse} style={{ width: "100%", maxWidth: 360 }} />
-                  </div>
-                </TinderCard>
-              ))
-            )}
-
-            {/* Super Neigh flash */}
-            {superFlash && (
+      {/* Centered play column */}
+      <div className="trotr-play-col">
+        <div className="trotr-deck">
+          {currentIndex < 0 ? (
+            <div
+              className="trotr-glass"
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                padding: "40px 28px",
+                borderRadius: "var(--radius-xl)",
+              }}
+            >
+              <span style={{ fontSize: 56 }}>🌾</span>
               <div
                 style={{
-                  position: "absolute",
-                  top: "38%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  padding: "10px 20px",
-                  borderRadius: "var(--radius-pill)",
-                  background: "var(--accent-super)",
-                  color: "#04222e",
                   fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontSize: 22,
-                  boxShadow: "0 10px 40px var(--glow-super)",
-                  animation: "trotr-pop 0.3s var(--ease-spring)",
-                  pointerEvents: "none",
-                  zIndex: 20,
+                  color: "var(--text-strong)",
+                  fontSize: 20,
+                  marginTop: 14,
                 }}
               >
-                *NEIGHHH!*
+                You&apos;ve trotted through everyone
               </div>
-            )}
-          </div>
-
-          {/* Action row */}
-          {currentIndex >= 0 && (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 16,
-                  padding: "14px 0 4px",
-                }}
+              <p style={{ fontSize: 13, lineHeight: 1.5, marginTop: 8, color: "var(--text-muted)", maxWidth: 260 }}>
+                Check back after the next hay delivery for fresh stallions &amp; mares.
+              </p>
+              <Button onClick={restart} iconLeft="rotateCcw" style={{ marginTop: 22 }}>
+                Start over
+              </Button>
+            </div>
+          ) : (
+            horses.map((horse, index) => (
+              <TinderCard
+                ref={childRefs[index]}
+                className="swipe"
+                key={horse.id}
+                onSwipe={(dir) => swiped(dir as Direction, index)}
+                onCardLeftScreen={() => outOfFrame(index)}
+                preventSwipe={["down"]}
               >
-                <IconButton
-                  icon="x"
-                  tone="nope"
-                  size="lg"
-                  label="Nope"
-                  disabled={!canSwipe}
-                  onClick={() => swipe("left")}
-                />
-                <IconButton
-                  icon="zap"
-                  tone="super"
-                  label="Super Neigh"
-                  disabled={!canSwipe}
-                  onClick={() => swipe("up")}
-                />
-                <IconButton
-                  icon="heart"
-                  tone="love"
-                  size="lg"
-                  label="Like"
-                  disabled={!canSwipe}
-                  onClick={() => swipe("right")}
-                />
-              </div>
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "6px 0 16px",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  color: "var(--text-faint)",
-                }}
-              >
-                Nope · Super Neigh · Like
-              </div>
-            </>
+                <ProfileCard horse={horse} fill style={{ width: "100%", height: "100%" }} />
+              </TinderCard>
+            ))
           )}
-        </>
-      )}
+
+          {/* Super Neigh flash */}
+          {superFlash && (
+            <div
+              style={{
+                position: "absolute",
+                top: "40%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                padding: "10px 20px",
+                borderRadius: "var(--radius-pill)",
+                background: "var(--accent-super)",
+                color: "#04222e",
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: 22,
+                boxShadow: "0 10px 40px var(--glow-super)",
+                animation: "trotr-pop 0.3s var(--ease-spring)",
+                pointerEvents: "none",
+                zIndex: 20,
+              }}
+            >
+              *NEIGHHH!*
+            </div>
+          )}
+        </div>
+
+        {/* Action row */}
+        {currentIndex >= 0 && (
+          <>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 18,
+                marginTop: 22,
+              }}
+            >
+              <IconButton icon="x" tone="nope" size="lg" label="Nope" disabled={!canSwipe} onClick={() => swipe("left")} />
+              <IconButton icon="zap" tone="super" label="Super Neigh" disabled={!canSwipe} onClick={() => swipe("up")} />
+              <IconButton icon="heart" tone="love" size="lg" label="Like" disabled={!canSwipe} onClick={() => swipe("right")} />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                marginTop: 14,
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                color: "var(--text-faint)",
+              }}
+            >
+              <Icon name="chevronLeft" size={12} /> Nope · Super Neigh · Like <Icon name="chevronRight" size={12} />
+            </div>
+          </>
+        )}
+      </div>
 
       {matched && (
         <MatchModal

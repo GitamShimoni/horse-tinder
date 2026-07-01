@@ -7,6 +7,10 @@ import { Badge, Tag } from "./ui";
 interface Props {
   horse: Horse;
   style?: CSSProperties;
+  /** When true, the card fills its parent's height and the hero grows to
+   *  take the remaining space (used by the centered swipe deck). Default
+   *  keeps the natural aspect-ratio sizing used on the landing page. */
+  fill?: boolean;
 }
 
 /**
@@ -14,7 +18,7 @@ interface Props {
  * emoji/neon-wash fallback), protection gradient, name/age + horse-years,
  * distance, verified badge, trait tags and an italic bio.
  */
-export default function ProfileCard({ horse, style }: Props) {
+export default function ProfileCard({ horse, style, fill = false }: Props) {
   const [failed, setFailed] = useState(false);
   const showPhoto = !failed && !!horse.imageUrl;
 
@@ -22,6 +26,9 @@ export default function ProfileCard({ horse, style }: Props) {
     <div
       style={{
         position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        height: fill ? "100%" : undefined,
         borderRadius: "var(--radius-xl)",
         overflow: "hidden",
         background: "var(--surface-solid)",
@@ -34,7 +41,9 @@ export default function ProfileCard({ horse, style }: Props) {
       <div
         style={{
           position: "relative",
-          aspectRatio: "3 / 4",
+          flex: fill ? 1 : undefined,
+          minHeight: fill ? 0 : undefined,
+          aspectRatio: fill ? undefined : "3 / 4",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
