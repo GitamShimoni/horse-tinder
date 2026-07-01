@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { Button, IconButton, Badge } from "../components/ui";
 import Icon from "../components/Icon";
@@ -69,6 +70,15 @@ function Feature({
 export default function HeroView({ onStart }: Props) {
   const showcase = horses[0];
 
+  // The intro cinematic plays once, then we smoothly scroll to the app below.
+  const contentRef = useRef<HTMLElement>(null);
+  const [introDone, setIntroDone] = useState(false);
+
+  const revealApp = () => {
+    setIntroDone(true);
+    contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div
       className="trotr-landing trotr-canvas"
@@ -80,19 +90,90 @@ export default function HeroView({ onStart }: Props) {
           "var(--bg-app)",
       }}
     >
+      {/* Cinematic intro — plays once, then auto-scrolls to the app */}
+      <section
+        style={{
+          position: "relative",
+          height: "100svh",
+          minHeight: 480,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          background: "#04060d",
+        }}
+      >
+        <video
+          src="/cinematic-girlie-horse.mp4"
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          onEnded={revealApp}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+        />
+        {/* Scrim so the brand + controls read over any frame */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(6,10,21,0.45) 0%, rgba(6,10,21,0) 30%, rgba(6,10,21,0) 60%, rgba(6,10,21,0.85) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+        {/* Brand mark, top-left */}
+        <div style={{ position: "absolute", top: 22, left: 24, display: "flex", alignItems: "center", gap: 10 }}>
+          <img src="/brand/trotr-mark.svg" alt="" width={30} height={30} />
+          <span
+            className="trotr-gradient-text"
+            style={{ fontFamily: "var(--font-display)", fontWeight: bold, fontSize: 21, letterSpacing: "var(--ls-tight)" }}
+          >
+            Horse Before Hoes
+          </span>
+        </div>
+        {/* Skip / scroll affordance */}
+        <button
+          type="button"
+          onClick={revealApp}
+          className="trotr-glass"
+          style={{
+            position: "absolute",
+            bottom: 28,
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "10px 18px",
+            borderRadius: "var(--radius-pill)",
+            color: "var(--text-strong)",
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--fs-sm)",
+            fontWeight: 600,
+            cursor: "pointer",
+            animation: introDone ? undefined : "trotr-float 2.4s ease-in-out infinite",
+          }}
+        >
+          {introDone ? "Enter the Barn" : "Skip the mane event"}
+          <Icon name="chevronDown" size={16} />
+        </button>
+      </section>
+
       {/* Nav */}
-      <nav className="trotr-shell" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 20px" }}>
+      <nav ref={contentRef} className="trotr-shell" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <img src="/brand/trotr-mark.svg" alt="" width={30} height={30} />
           <span
             className="trotr-gradient-text"
-            style={{ fontFamily: "var(--font-display)", fontWeight: bold, fontSize: 24, letterSpacing: "var(--ls-tight)" }}
+            style={{ fontFamily: "var(--font-display)", fontWeight: bold, fontSize: 21, letterSpacing: "var(--ls-tight)" }}
           >
-            Trotr
+            Horse Before Hoes
           </span>
         </div>
         <div className="trotr-nav-links" style={{ alignItems: "center", gap: 28 }}>
-          {["Discover", "Neigh-Premium", "Stories", "About"].map((l) => (
+          {["Discover", "Stud Club", "Barn Stories", "The Code"].map((l) => (
             <span key={l} style={{ fontSize: "var(--fs-sm)", fontWeight: 600, color: "var(--text-muted)", cursor: "pointer" }}>
               {l}
             </span>
@@ -110,7 +191,7 @@ export default function HeroView({ onStart }: Props) {
           <div>
             <span style={{ display: "inline-flex" }}>
               <Badge tone="neon" icon="sparkles">
-                Where stable relationships begin
+                The stallion code, since forever
               </Badge>
             </span>
             <h1
@@ -124,7 +205,7 @@ export default function HeroView({ onStart }: Props) {
                 color: "var(--text-strong)",
               }}
             >
-              Find your <span className="trotr-gradient-text">mane</span> match.
+              Put your <span className="trotr-gradient-text">horse</span> before your hoes.
             </h1>
             <p
               style={{
@@ -135,9 +216,10 @@ export default function HeroView({ onStart }: Props) {
                 color: "var(--text-muted)",
               }}
             >
-              Swipe through eligible stallions and mares in nearby barns, match
-              with your soul-mare, and gallop off into a stable relationship. No
-              riders, no drama, no low-grade oats.
+              Every real stallion lives by one sacred rule: the horse comes
+              before the hoes (the garden tools, obviously — get your mind out
+              of the paddock). Swipe through loyal mares and studs who put the
+              barn first and low-grade oats last.
             </p>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 32 }}>
@@ -153,13 +235,13 @@ export default function HeroView({ onStart }: Props) {
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
                 <Icon name="shieldCheck" size={17} style={{ color: "var(--emerald-400)" }} />
                 <span style={{ fontSize: "var(--fs-sm)", color: "var(--text-body)" }}>
-                  <strong style={{ color: "var(--text-strong)" }}>14,000+</strong> verified studs &amp; mares
+                  <strong style={{ color: "var(--text-strong)" }}>14,000+</strong> studs who chose horse over hoes
                 </span>
               </div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
                 <Icon name="star" size={17} style={{ color: "var(--gold-400)" }} />
                 <span style={{ fontSize: "var(--fs-sm)", color: "var(--text-body)" }}>
-                  <strong style={{ color: "var(--text-strong)" }}>4.9</strong> in the Hay App Store
+                  <strong style={{ color: "var(--text-strong)" }}>4.9</strong> hooves up in the Hay App Store
                 </span>
               </div>
             </div>
@@ -192,9 +274,9 @@ export default function HeroView({ onStart }: Props) {
                     marginTop: 16,
                   }}
                 >
-                  <IconButton icon="x" tone="nope" size="sm" label="Nope" onClick={onStart} />
+                  <IconButton icon="x" tone="nope" size="sm" label="Hoe, no" onClick={onStart} />
                   <IconButton icon="zap" tone="super" size="sm" label="Super Neigh" onClick={onStart} />
-                  <IconButton icon="heart" tone="love" size="sm" label="Like" onClick={onStart} />
+                  <IconButton icon="heart" tone="love" size="sm" label="Stable it" onClick={onStart} />
                 </div>
               </div>
             </div>
@@ -205,17 +287,18 @@ export default function HeroView({ onStart }: Props) {
       {/* Feature strip */}
       <section className="trotr-shell">
         <div className="trotr-features">
-          <Feature icon="shieldCheck" color="var(--emerald-400)" title="Verified studs">
-            Every profile is barn-checked and hoof-manicured. Swipe with
-            confidence — no catfish, only thoroughbreds.
+          <Feature icon="shieldCheck" color="var(--emerald-400)" title="Certified loyal">
+            Every profile passes the Code: horse first, hoes (garden variety)
+            second. No catfish, no cheaters, only thoroughbreds who stay in
+            their lane.
           </Feature>
           <Feature icon="zap" color="var(--accent-super)" title="Super Neigh">
-            Out of subtlety? Send a Super Neigh and let them hear it across
-            three paddocks. *NEIGHHH!*
+            Out of subtlety? Send a Super Neigh and let your one true stable-mate
+            hear it across three paddocks. *NEIGHHH!*
           </Feature>
-          <Feature icon="crown" color="var(--gold-400)" title="Neigh-Premium">
-            Unlimited neighs, see who trotted your way, and a complimentary
-            First-Date Hay-Champagne on us.
+          <Feature icon="crown" color="var(--gold-400)" title="Stud Club">
+            Unlimited neighs, see who put you before their hoes, and a
+            complimentary First-Date Hay-Champagne on the house.
           </Feature>
         </div>
       </section>
@@ -239,10 +322,10 @@ export default function HeroView({ onStart }: Props) {
           }}
         >
           <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--fs-xs)", color: "var(--text-faint)" }}>
-            © 2026 Trotr · No horsing around
+            © 2026 Horse Before Hoes · Live by the Code
           </span>
           <span style={{ fontSize: "var(--fs-xs)", color: "var(--text-faint)" }}>
-            Made with 🌾 for horses everywhere
+            Made with 🌾 for stallions who keep their priorities straight
           </span>
         </div>
       </footer>

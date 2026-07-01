@@ -11,13 +11,14 @@ interface Props {
 
 const HORSE_REPLIES = [
   "Neigh! 🐴",
-  "Do you have a sugar cube? 🧊",
-  "I'm not looking for a one-night trot.",
-  "Let's gallop away together. 🏇",
+  "Do you swear by the Code? Horse before hoes, no exceptions.",
+  "Real talk: would you ever leave me for a garden rake? 🌿",
+  "I'm not looking for a one-night trot. I want stable.",
   "You had me at hay. 🌾",
-  "Careful, I might just be your stable relationship. 😏",
-  "Sorry, I was grazing. What did you say?",
+  "My last stallion put a wheelbarrow before me. Never again. 💔",
+  "Careful, I might just be your forever stable-mate. 😏",
   "Hold your horses, I'm blushing. 😳",
+  "Prove it. Name one hoe you'd choose over me. (Trick question.) 😤",
 ];
 
 let msgId = 0;
@@ -25,7 +26,7 @@ const nextId = () => ++msgId;
 
 export default function ChatView({ horse, onBack }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { id: nextId(), from: "horse", text: `Hey, it's ${horse.name}. You swiped right? 😏` },
+    { id: nextId(), from: "horse", text: `Hey, it's ${horse.name}. You swiped right? 😏 Quick question before anything else — horse or hoes?` },
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
@@ -122,7 +123,7 @@ export default function ChatView({ horse, onBack }: Props) {
                 boxShadow: "0 0 8px var(--glow-emerald)",
               }}
             />
-            Trotting now
+Trotting now · horse before hoes
           </div>
         </div>
       </header>

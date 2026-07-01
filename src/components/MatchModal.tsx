@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Horse } from "../types";
 import { Avatar, Button } from "./ui";
 import Icon from "./Icon";
+import { SparkleBurst } from "./Sparkles";
 
 interface Props {
   horse: Horse;
@@ -43,8 +44,11 @@ export default function MatchModal({ horse, onSendMessage, onKeepSwiping }: Prop
           animation: "trotr-pulse-glow 2.6s var(--ease-out) infinite, trotr-pop 0.3s var(--ease-spring)",
         }}
       >
+        <SparkleBurst />
         <div
           style={{
+            position: "relative",
+            zIndex: 2,
             borderRadius: "calc(var(--radius-xl) - 2px)",
             background: "var(--surface-glass-strong)",
             backdropFilter: "blur(var(--glass-blur-strong))",
@@ -87,8 +91,8 @@ export default function MatchModal({ horse, onSendMessage, onKeepSwiping }: Prop
               lineHeight: "var(--lh-normal)",
             }}
           >
-            You and <strong style={{ color: "var(--text-strong)" }}>{horse.name}</strong> both said
-            neigh. A horse-wedding simulation is now booking your barn…
+            You and <strong style={{ color: "var(--text-strong)" }}>{horse.name}</strong> both swore
+            the oath: horse before hoes, forever. A barn-wedding simulation is now booking your stable…
           </p>
 
           <div style={{ marginTop: "var(--space-5)", display: "grid", gap: 10 }}>

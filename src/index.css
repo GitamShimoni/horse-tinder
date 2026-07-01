@@ -82,12 +82,19 @@
   --accent-premium: var(--gold-500);
   --accent-market: var(--emerald-400);
 
+  /* Game feedback hues (like = green, nope = red) */
+  --green-400: #22c55e;
+  --green-300: #4ade80;
+  --red-400: #f87171;
+
   /* Neon glow colors (for box-shadow rings) */
   --glow-pink: rgba(255, 45, 120, 0.55);
   --glow-orange: rgba(255, 122, 24, 0.5);
   --glow-emerald: rgba(52, 211, 153, 0.5);
   --glow-gold: rgba(245, 181, 36, 0.5);
   --glow-super: rgba(56, 189, 248, 0.55);
+  --glow-green: rgba(34, 197, 94, 0.55);
+  --glow-red: rgba(239, 68, 68, 0.5);
 
   /* Families */
   --font-display: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -339,6 +346,51 @@ body {
 @keyframes trotr-typing {
   0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
   30% { transform: translateY(-4px); opacity: 1; }
+}
+
+@keyframes trotr-twinkle {
+  0%, 100% { opacity: 0.12; transform: scale(0.6); }
+  50% { opacity: 0.95; transform: scale(1.15); }
+}
+
+@keyframes trotr-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes trotr-stamp-in {
+  0% { opacity: 0; transform: rotate(var(--rot, 0deg)) scale(0.4); }
+  60% { opacity: 1; transform: rotate(var(--rot, 0deg)) scale(1.12); }
+  100% { opacity: 1; transform: rotate(var(--rot, 0deg)) scale(1); }
+}
+
+@keyframes trotr-burst {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--bx, 0px)), calc(-50% + var(--by, 0px))) scale(1.1); }
+}
+
+/* ---- Side GIF rails (decorative; render only when GIFs are supplied) ---- */
+.trotr-sidegif {
+  display: none;
+}
+@media (min-width: 1100px) {
+  .trotr-sidegif {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    width: 200px;
+    flex-shrink: 0;
+    padding: 20px 14px;
+  }
+  .trotr-sidegif img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

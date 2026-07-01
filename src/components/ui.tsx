@@ -191,7 +191,7 @@ export function Avatar({
 
 /* ---------------------------- IconButton ----------------------------- */
 
-export type IconButtonTone = "nope" | "like" | "love" | "super" | "neutral";
+export type IconButtonTone = "nope" | "like" | "love" | "super" | "neutral" | "green" | "red";
 type IconButtonSize = "sm" | "md" | "lg";
 
 const IB_TONES: Record<IconButtonTone, { color: string; ring: string; glow: string; border: string }> = {
@@ -200,6 +200,8 @@ const IB_TONES: Record<IconButtonTone, { color: string; ring: string; glow: stri
   love: { color: "var(--neon-pink)", ring: "rgba(255,45,120,0.55)", glow: "var(--glow-pink)", border: "rgba(255,45,120,0.4)" },
   super: { color: "var(--accent-super)", ring: "rgba(56,189,248,0.6)", glow: "var(--glow-super)", border: "rgba(56,189,248,0.45)" },
   neutral: { color: "var(--text-body)", ring: "rgba(148,163,184,0.35)", glow: "rgba(148,163,184,0.28)", border: "var(--border-hairline)" },
+  green: { color: "var(--green-300)", ring: "rgba(34,197,94,0.6)", glow: "var(--glow-green)", border: "rgba(34,197,94,0.45)" },
+  red: { color: "var(--red-400)", ring: "rgba(239,68,68,0.6)", glow: "var(--glow-red)", border: "rgba(239,68,68,0.45)" },
 };
 
 const IB_SIZES: Record<IconButtonSize, number> = { sm: 40, md: 56, lg: 68 };

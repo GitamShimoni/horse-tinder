@@ -76,7 +76,7 @@ export default function ProfileCard({ horse, style, fill = false }: Props) {
         {horse.verified && (
           <span style={{ position: "absolute", top: 14, right: 14, zIndex: 2 }}>
             <Badge tone="emerald" icon="shieldCheck">
-              Verified Stud
+              Code-Verified
             </Badge>
           </span>
         )}
