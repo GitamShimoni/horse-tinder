@@ -1,11 +1,17 @@
 import type { Horse } from "../types";
 
-// Trotr sample deck. LoremFlickr serves real horse photos based on keywords.
-// The `lock` query param stops the images from changing on every single re-render,
-// because seeing a majestic stallion mutate into a Shetland pony mid-swipe is bad UX.
-// If the API dies, it falls back to a neon emoji hero. No broken profiles on our watch.
-const img = (lock: number) =>
-  `https://loremflickr.com/800/1000/horse,pony,stallion/all?lock=${lock}`;
+const HORSE_IMAGES = [
+  "https://i.ibb.co/B5Mb7PmQ/Chat-GPT-Image-Jul-1-2026-08-49-50-PM-8.png",
+  "https://i.ibb.co/k2Y1wq9Q/Chat-GPT-Image-Jul-1-2026-08-49-51-PM-9.png",
+  "https://i.ibb.co/TBWT0jRr/Chat-GPT-Image-Jul-1-2026-08-49-51-PM-10.png",
+  "https://i.ibb.co/39WC2b6f/Chat-GPT-Image-Jul-1-2026-08-49-49-PM-5.png",
+  "https://i.ibb.co/676JLGTv/Chat-GPT-Image-Jul-1-2026-08-49-50-PM-6.png",
+  "https://i.ibb.co/dwcT0wv4/Chat-GPT-Image-Jul-1-2026-08-49-50-PM-7.png",
+  "https://i.ibb.co/wNTnhcJY/Chat-GPT-Image-Jul-1-2026-08-49-48-PM-2.png",
+  "https://i.ibb.co/yj0XvmV/Chat-GPT-Image-Jul-1-2026-08-49-48-PM-3.png",
+  "https://i.ibb.co/390NzCbt/Chat-GPT-Image-Jul-1-2026-08-49-49-PM-4.png",
+  "https://i.ibb.co/DHmXcjdC/Chat-GPT-Image-Jul-1-2026-08-49-48-PM-1.png",
+] as const;
 
 export const horses: Horse[] = [
   {
@@ -23,7 +29,7 @@ export const horses: Horse[] = [
       { emoji: "🏎️", label: "1 HP (Physically & Emotionally)" },
       { emoji: "🥃", label: "Existential Dread" },
     ],
-    imageUrl: img(11),
+    imageUrl: HORSE_IMAGES[0],
   },
   {
     id: 2,
@@ -40,7 +46,7 @@ export const horses: Horse[] = [
       { emoji: "🥕", label: "Carrot Cake Addict" },
       { emoji: "🚫", label: "Will Kick if Startled" },
     ],
-    imageUrl: img(22),
+    imageUrl: HORSE_IMAGES[1],
   },
   {
     id: 3,
@@ -57,7 +63,7 @@ export const horses: Horse[] = [
       { emoji: "💵", label: "Gambling Problem" },
       { emoji: "🧼", label: "Freshly Hoof-Manicured" },
     ],
-    imageUrl: img(33),
+    imageUrl: HORSE_IMAGES[2],
   },
   {
     id: 4,
@@ -74,7 +80,7 @@ export const horses: Horse[] = [
       { emoji: "🚜", label: "Jealous of Farm Equipment" },
       { emoji: "💅", label: "High Maintenance" },
     ],
-    imageUrl: img(44),
+    imageUrl: HORSE_IMAGES[3],
   },
   {
     id: 5,
@@ -91,7 +97,7 @@ export const horses: Horse[] = [
       { emoji: "💸", label: "Alimony Payments" },
       { emoji: "🥂", label: "Champagne Taste, Hay Budget" },
     ],
-    imageUrl: img(55),
+    imageUrl: HORSE_IMAGES[4],
   },
   {
     id: 6,
@@ -108,6 +114,74 @@ export const horses: Horse[] = [
       { emoji: "📜", label: "Sworn to the Code" },
       { emoji: "⚡", label: "Pure Chaos" },
     ],
-    imageUrl: img(66),
+    imageUrl: HORSE_IMAGES[5],
+  },
+  {
+    id: 7,
+    name: "Whiskey",
+    age: 8,
+    horseAge: 56,
+    emoji: "🥃",
+    distance: "6 miles away",
+    location: "The Saloon Trough (After Hours)",
+    verified: false,
+    bio: "Neigh means neigh — unless it's Tuesday and the apple cider is spiked. I've dated three rakes, two shovels, and a wheelbarrow. None of them understood the Code. Looking for someone who'll walk me home before last call.",
+    tags: [
+      { emoji: "🍺", label: "Emotional Support Bourbon" },
+      { emoji: "🎰", label: "Bad Decisions After 9pm" },
+      { emoji: "🤠", label: "Saloon Regular" },
+    ],
+    imageUrl: HORSE_IMAGES[6],
+  },
+  {
+    id: 8,
+    name: "Mane Event",
+    age: 6,
+    horseAge: 42,
+    emoji: "💇",
+    distance: "1.5 miles away",
+    location: "Glamour Stable & Blowout Bar",
+    verified: true,
+    bio: "My mane has its own agent. Yours should too. I don't do pasture casual — I do red-carpet hay. Swipe right if you believe horse before hoes AND horse before bad highlights. Blow-dry appointments are non-negotiable.",
+    tags: [
+      { emoji: "✨", label: "Main Character Mane" },
+      { emoji: "📸", label: "Influencer (12k Neighs)" },
+      { emoji: "💄", label: "Glam Before Grain" },
+    ],
+    imageUrl: HORSE_IMAGES[7],
+  },
+  {
+    id: 9,
+    name: "Trotty McTrotface",
+    age: 4,
+    horseAge: 28,
+    emoji: "🗳️",
+    distance: "12 miles away",
+    location: "Democracy Field (Internet Famous)",
+    verified: true,
+    bio: "Named by a public vote and I've never recovered. 47,000 people chose this. I honor their mandate and the Code equally. Will trot for treats, clout, or a mare who doesn't laugh at my birth certificate.",
+    tags: [
+      { emoji: "🌐", label: "Crowdsourced Identity" },
+      { emoji: "🏆", label: "People's Champion" },
+      { emoji: "😤", label: "Sensitive About the Name" },
+    ],
+    imageUrl: HORSE_IMAGES[8],
+  },
+  {
+    id: 10,
+    name: "Karen",
+    age: 10,
+    horseAge: 70,
+    emoji: "📋",
+    distance: "300 ft away",
+    location: "HOA Pasture (Complaint Desk)",
+    verified: false,
+    bio: "I'd like to speak to the barn manager. Your fence is two inches over the property line and your oat quality is UNACCEPTABLE. I report code violations for fun — but I live by one code myself: horse before hoes, always.",
+    tags: [
+      { emoji: "📞", label: "Calls the Manager" },
+      { emoji: "🚧", label: "Fence Line Enforcer" },
+      { emoji: "☕", label: "Wine Mom Energy" },
+    ],
+    imageUrl: HORSE_IMAGES[9],
   },
 ];
