@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import type { ChatMessage, Horse } from "../types";
-import HorseImage from "../components/HorseImage";
+import { Avatar } from "../components/ui";
+import Icon from "../components/Icon";
 
 interface Props {
   horse: Horse;
@@ -49,7 +51,7 @@ export default function ChatView({ horse, onBack }: Props) {
     setMessages((prev) => [...prev, { id: nextId(), from: "me", text }]);
     setInput("");
 
-    // Hackathon magic: auto-responder replies after ~1s.
+    // Auto-responder replies after ~1s.
     setTyping(true);
     timerRef.current = window.setTimeout(() => {
       const reply = HORSE_REPLIES[Math.floor(Math.random() * HORSE_REPLIES.length)];
@@ -58,53 +60,134 @@ export default function ChatView({ horse, onBack }: Props) {
     }, 1000);
   };
 
+  const bold = "var(--fw-bold)" as CSSProperties["fontWeight"];
+
   return (
-    <div className="flex h-full w-full flex-col bg-gradient-to-b from-rose-50 to-pink-100">
+    <div
+      className="trotr-canvas"
+      style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}
+    >
       {/* Header */}
-      <header className="flex items-center gap-3 border-b border-black/5 bg-white px-4 py-3 shadow-sm">
+      <header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          padding: "16px 16px 14px",
+          borderBottom: "1px solid var(--border-subtle)",
+          background: "var(--surface-glass-strong)",
+          backdropFilter: "blur(var(--glass-blur))",
+          WebkitBackdropFilter: "blur(var(--glass-blur))",
+        }}
+      >
         <button
           onClick={onBack}
           aria-label="Back"
-          className="text-2xl text-rose-500 transition-transform active:scale-90"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 34,
+            height: 34,
+            borderRadius: "var(--radius-pill)",
+            border: "1px solid var(--border-hairline)",
+            background: "transparent",
+            color: "var(--text-body)",
+            cursor: "pointer",
+          }}
         >
-          ‹
+          <Icon name="chevronLeft" size={20} />
         </button>
-        <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-rose-200">
-          <HorseImage horse={horse} className="rounded-full" />
-        </div>
-        <div>
-          <p className="font-bold leading-tight text-gray-800">{horse.name}</p>
-          <p className="text-xs text-green-500">Online now</p>
+        <Avatar src={horse.imageUrl} emoji={horse.emoji} size="sm" ring="neon" online />
+        <div style={{ lineHeight: 1.2 }}>
+          <div style={{ fontWeight: bold, color: "var(--text-strong)", fontSize: "var(--fs-title)" }}>
+            {horse.name}
+          </div>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 5,
+              fontSize: "var(--fs-xs)",
+              color: "var(--emerald-400)",
+              marginTop: 2,
+            }}
+          >
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: "var(--emerald-400)",
+                boxShadow: "0 0 8px var(--glow-emerald)",
+              }}
+            />
+            Trotting now
+          </div>
         </div>
       </header>
 
       {/* Messages */}
-      <div ref={scrollRef} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
-        {messages.map((m) => (
-          <div
-            key={m.id}
-            className={`flex ${m.from === "me" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-[15px] shadow-sm ${
-                m.from === "me"
-                  ? "rounded-br-md bg-rose-500 text-white"
-                  : "rounded-bl-md bg-white text-gray-800"
-              }`}
-            >
-              {m.text}
+      <div
+        ref={scrollRef}
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "16px 16px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        {messages.map((m) => {
+          const mine = m.from === "me";
+          return (
+            <div key={m.id} style={{ display: "flex", justifyContent: mine ? "flex-end" : "flex-start" }}>
+              <div
+                style={{
+                  maxWidth: "76%",
+                  padding: "10px 14px",
+                  fontSize: "var(--fs-body)",
+                  lineHeight: "var(--lh-normal)",
+                  borderRadius: mine ? "18px 18px 6px 18px" : "18px 18px 18px 6px",
+                  color: mine ? "var(--text-on-accent)" : "var(--text-strong)",
+                  background: mine ? "var(--grad-dating)" : "var(--surface-card)",
+                  border: mine ? "1px solid transparent" : "1px solid var(--border-hairline)",
+                  boxShadow: mine ? "0 6px 18px rgba(255,45,120,0.28)" : "var(--shadow-sm)",
+                  backdropFilter: mine ? "none" : "blur(var(--glass-blur))",
+                  WebkitBackdropFilter: mine ? "none" : "blur(var(--glass-blur))",
+                }}
+              >
+                {m.text}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {typing && (
-          <div className="flex justify-start">
-            <div className="rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-sm">
-              <span className="flex gap-1">
-                <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]" />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]" />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400" />
-              </span>
+          <div style={{ display: "flex", justifyContent: "flex-start" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: 5,
+                padding: "12px 14px",
+                borderRadius: "18px 18px 18px 6px",
+                background: "var(--surface-card)",
+                border: "1px solid var(--border-hairline)",
+              }}
+            >
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  style={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: "50%",
+                    background: "var(--slate-400)",
+                    animation: `trotr-typing 1s ${i * 0.15}s var(--ease-out) infinite`,
+                  }}
+                />
+              ))}
             </div>
           </div>
         )}
@@ -116,21 +199,55 @@ export default function ChatView({ horse, onBack }: Props) {
           e.preventDefault();
           send();
         }}
-        className="flex items-center gap-2 border-t border-black/5 bg-white px-3 py-3"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "12px 14px",
+          borderTop: "1px solid var(--border-subtle)",
+          background: "var(--surface-glass-strong)",
+          backdropFilter: "blur(var(--glass-blur))",
+          WebkitBackdropFilter: "blur(var(--glass-blur))",
+        }}
       >
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={`Message ${horse.name}…`}
-          className="flex-1 rounded-full bg-gray-100 px-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-rose-300"
+          style={{
+            flex: 1,
+            padding: "12px 16px",
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--fs-body)",
+            color: "var(--text-strong)",
+            background: "var(--surface-card)",
+            border: "1px solid var(--border-hairline)",
+            borderRadius: "var(--radius-pill)",
+            outline: "none",
+          }}
         />
         <button
           type="submit"
           disabled={!input.trim()}
           aria-label="Send"
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-rose-500 text-xl text-white shadow-md transition-transform active:scale-90 disabled:opacity-40"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 44,
+            height: 44,
+            flexShrink: 0,
+            borderRadius: "var(--radius-pill)",
+            border: "1px solid transparent",
+            background: "var(--grad-dating)",
+            color: "var(--text-on-accent)",
+            cursor: input.trim() ? "pointer" : "not-allowed",
+            opacity: input.trim() ? 1 : 0.4,
+            boxShadow: "0 6px 18px rgba(255,45,120,0.3)",
+            transition: "opacity var(--dur-fast) var(--ease-out)",
+          }}
         >
-          ➤
+          <Icon name="send" size={19} />
         </button>
       </form>
     </div>

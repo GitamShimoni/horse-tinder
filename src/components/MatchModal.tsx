@@ -1,5 +1,7 @@
+import type { CSSProperties } from "react";
 import type { Horse } from "../types";
-import HorseImage from "./HorseImage";
+import { Avatar, Button } from "./ui";
+import Icon from "./Icon";
 
 interface Props {
   horse: Horse;
@@ -7,40 +9,97 @@ interface Props {
   onKeepSwiping: () => void;
 }
 
+/**
+ * MatchModal — the celebratory "It's a Match!" moment, styled as the
+ * design system's MatchToast: neon gradient border-glow, two overlapping
+ * avatars, gradient headline, then the send/keep-swiping actions.
+ */
 export default function MatchModal({ horse, onSendMessage, onKeepSwiping }: Props) {
   return (
-    <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-gradient-to-br from-rose-500/95 to-pink-600/95 px-8 text-center text-white backdrop-blur-sm">
-      <div className="animate-pop">
-        <h2 className="text-4xl font-extrabold drop-shadow-md">It's a Match!</h2>
-        <p className="mt-1 text-2xl">🐴 ❤️ 🐴</p>
-
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <div className="h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-lg">
-            <div className="flex h-full w-full items-center justify-center bg-white text-5xl">
-              🧑‍🌾
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 30,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "0 24px",
+        background: "rgba(6,10,21,0.72)",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
+      }}
+    >
+      <div
+        role="status"
+        style={{
+          position: "relative",
+          width: 340,
+          maxWidth: "90%",
+          padding: 2,
+          borderRadius: "var(--radius-xl)",
+          background: "var(--grad-dating)",
+          boxShadow: "0 24px 70px rgba(255,45,120,0.4), 0 0 0 1px rgba(255,45,120,0.3)",
+          animation: "trotr-pulse-glow 2.6s var(--ease-out) infinite, trotr-pop 0.3s var(--ease-spring)",
+        }}
+      >
+        <div
+          style={{
+            borderRadius: "calc(var(--radius-xl) - 2px)",
+            background: "var(--surface-glass-strong)",
+            backdropFilter: "blur(var(--glass-blur-strong))",
+            WebkitBackdropFilter: "blur(var(--glass-blur-strong))",
+            padding: "var(--space-6) var(--space-5) var(--space-5)",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "var(--space-4)" }}>
+            <div style={{ marginRight: -14, transform: "rotate(-8deg)" }}>
+              <Avatar emoji="🧑‍🌾" size="xl" ring="neon" />
+            </div>
+            <div style={{ marginLeft: -14, transform: "rotate(8deg)" }}>
+              <Avatar emoji={horse.emoji} src={horse.imageUrl} size="xl" ring="neon" />
             </div>
           </div>
-          <div className="h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-lg">
-            <HorseImage horse={horse} className="rounded-full" />
+
+          <div
+            className="trotr-gradient-text"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "var(--fs-h1)",
+              fontWeight: "var(--fw-bold)" as CSSProperties["fontWeight"],
+              letterSpacing: "var(--ls-tight)",
+              lineHeight: 1.05,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
+            <Icon name="sparkles" size={26} style={{ color: "var(--neon-orange)" }} />
+            It&apos;s a Match!
+          </div>
+
+          <p
+            style={{
+              margin: "10px 0 0",
+              fontSize: "var(--fs-body)",
+              color: "var(--text-body)",
+              lineHeight: "var(--lh-normal)",
+            }}
+          >
+            You and <strong style={{ color: "var(--text-strong)" }}>{horse.name}</strong> both said
+            neigh. A horse-wedding simulation is now booking your barn…
+          </p>
+
+          <div style={{ marginTop: "var(--space-5)", display: "grid", gap: 10 }}>
+            <Button onClick={onSendMessage} block iconLeft="messageCircle">
+              Send a Message
+            </Button>
+            <Button onClick={onKeepSwiping} variant="ghost" block>
+              Keep Swiping
+            </Button>
           </div>
         </div>
-
-        <p className="mt-6 text-lg font-medium">
-          You and <span className="font-bold">{horse.name}</span> liked each other.
-        </p>
-
-        <button
-          onClick={onSendMessage}
-          className="mt-8 w-full max-w-xs rounded-full bg-white px-8 py-3.5 text-lg font-bold text-rose-600 shadow-xl transition-transform active:scale-95 hover:bg-rose-50"
-        >
-          Send a Message 💬
-        </button>
-        <button
-          onClick={onKeepSwiping}
-          className="mt-3 w-full max-w-xs rounded-full border-2 border-white/70 px-8 py-3 font-semibold text-white transition-colors active:scale-95 hover:bg-white/10"
-        >
-          Keep Swiping
-        </button>
       </div>
     </div>
   );

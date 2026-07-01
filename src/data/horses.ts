@@ -1,52 +1,113 @@
 import type { Horse } from "../types";
 
-// Hackathon mock data. Images are Unsplash horse photos.
-// SwipeCard has an onError fallback (emoji + gradient), so the UI never
-// breaks even if a particular image URL fails to load.
-const img = (id: string) =>
-  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&h=1000&q=80`;
+// Trotr sample deck. LoremFlickr serves real horse photos based on keywords.
+// The `lock` query param stops the images from changing on every single re-render,
+// because seeing a majestic stallion mutate into a Shetland pony mid-swipe is bad UX.
+// If the API dies, it falls back to a neon emoji hero. No broken profiles on our watch.
+const img = (lock: number) =>
+  `https://loremflickr.com/800/1000/horse,pony,stallion/all?lock=${lock}`;
 
 export const horses: Horse[] = [
   {
     id: 1,
     name: "BoJack",
     age: 9,
-    bio: "Looking for someone to ride into the sunset with. No riders allowed. 🌅",
-    imageUrl: img("photo-1553284965-83fd3e82fa5a"),
+    horseAge: 63,
+    emoji: "🐴",
+    distance: "2 miles away",
+    location: "The Next Barn Over",
+    verified: true,
+    bio: "Looking for a stable relationship, but honestly? I have a lot of baggage and a Netflix deal. No horsing around. Must love long, heavy sighs on the beach.",
+    tags: [
+      { emoji: "🌾", label: "Gluten-Free Hay Only" },
+      { emoji: "🏎️", label: "1 HP (Physically & Emotionally)" },
+      { emoji: "🥃", label: "Existential Dread" },
+    ],
+    imageUrl: img(11),
   },
   {
     id: 2,
     name: "Spirit",
     age: 5,
-    bio: "Free spirit, love running wild. Sugar cubes are the way to my heart. 🐎",
-    imageUrl: img("photo-1534773728080-33d31da27ae5"),
+    horseAge: 35,
+    emoji: "🐎",
+    distance: "1 mile away",
+    location: "Sunny Meadow (Behind the Electric Fence)",
+    verified: true,
+    bio: "Wild at heart, fully vaccinated, heavily allergic to drama and low-grade oats. If you don't bring premium sugar cubes, don't even breathe my way.",
+    tags: [
+      { emoji: "✨", label: "Untamable Screen Time" },
+      { emoji: "🥕", label: "Carrot Cake Addict" },
+      { emoji: "🚫", label: "Will Kick if Startled" },
+    ],
+    imageUrl: img(22),
   },
   {
     id: 3,
     name: "Seabiscuit",
     age: 7,
-    bio: "Fast on the track, slow to fall in love. Swipe right if you can keep up. 🏇",
-    imageUrl: img("photo-1598974357801-cbca100e65d3"),
+    horseAge: 49,
+    emoji: "🏇",
+    distance: "3 miles away",
+    location: "Thunder Ridge Ranch",
+    verified: false,
+    bio: "Fast on the track, faster to ghost you. Swipe right if you can handle 1,200 pounds of raw, unbridled anxiety. Looking for my forever-jockey.",
+    tags: [
+      { emoji: "💪", label: "Retired & Bitter" },
+      { emoji: "💵", label: "Gambling Problem" },
+      { emoji: "🧼", label: "Freshly Hoof-Manicured" },
+    ],
+    imageUrl: img(33),
   },
   {
     id: 4,
     name: "Clover",
     age: 4,
-    bio: "Meadow enthusiast. My love language is fresh hay and long gallops. 🍀",
-    imageUrl: img("photo-1511994714008-b6d68a8b32a2"),
+    horseAge: 28,
+    emoji: "🦄",
+    distance: "4 miles away",
+    location: "Emerald Paddock (VIP Section)",
+    verified: true,
+    bio: "Meadow enthusiast and certified unicorn-adjacent. My love language is physical touch (brushing) and acts of service (cleaning my stall). No mares, please.",
+    tags: [
+      { emoji: "🍀", label: "Lucky (Nepo Baby)" },
+      { emoji: "🎠", label: "Ex-Carousel Trauma" },
+      { emoji: "💅", label: "High Maintenance" },
+    ],
+    imageUrl: img(44),
   },
   {
     id: 5,
     name: "Duke",
     age: 11,
-    bio: "Distinguished stallion. I bring the mane, you bring the vibes. 🎩",
-    imageUrl: img("photo-1566251037378-5e04e3bec343"),
+    horseAge: 77,
+    emoji: "🐴",
+    distance: "5 miles away",
+    location: "Silvermane Estate (The Big House)",
+    verified: false,
+    bio: "Silver mane, silver-fox energy. I’m basically the George Clooney of the pasture. I bring the pedigree, you bring the salt lick. Looking for a sugar mama.",
+    tags: [
+      { emoji: "🎩", label: "Distinguished Stallion" },
+      { emoji: "💸", label: "Alimony Payments" },
+      { emoji: "🥂", label: "Champagne Taste, Hay Budget" },
+    ],
+    imageUrl: img(55),
   },
   {
     id: 6,
     name: "Pip",
     age: 3,
-    bio: "Tiny pony, big heart. Warning: I will steal your carrots AND your soul. 🥕",
-    imageUrl: img("photo-1526095179574-86e545346ae6"),
+    horseAge: 21,
+    emoji: "🐴",
+    distance: "800 ft away",
+    location: "The Little Stable (I escaped)",
+    verified: true,
+    bio: "Tiny pony, absolute goblin energy. Warning: I will steal your carrots, your ankles, and your soul. Ponies are people too, just angrier.",
+    tags: [
+      { emoji: "🥷", label: "Carrot Kleptomaniac" },
+      { emoji: "🧸", label: "Ankle-Biter" },
+      { emoji: "⚡", label: "Pure Chaos" },
+    ],
+    imageUrl: img(66),
   },
 ];

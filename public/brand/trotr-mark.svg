@@ -1,0 +1,15 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trotr mark">
+  <defs>
+    <linearGradient id="tg" x1="20" y1="14" x2="100" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff2d78"></stop>
+      <stop offset="1" stop-color="#ff7a18"></stop>
+    </linearGradient>
+  </defs>
+  
+  <path d="M38 96 C 20 82, 20 40, 60 22 C 100 40, 100 82, 82 96" stroke="url(#tg)" stroke-width="15" stroke-linecap="round" fill="none"></path>
+  
+  <circle cx="30" cy="60" r="4" fill="#ff2d78"></circle>
+  <circle cx="34" cy="80" r="4" fill="#ff4a6f"></circle>
+  <circle cx="90" cy="60" r="4" fill="#ff7a18"></circle>
+  <circle cx="86" cy="80" r="4" fill="#ff8f3c"></circle>
+</svg>

@@ -1,20 +1,23 @@
 import { createRef, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import TinderCard from "react-tinder-card";
 import { horses } from "../data/horses";
 import type { Horse } from "../types";
-import HorseImage from "../components/HorseImage";
+import ProfileCard from "../components/ProfileCard";
 import MatchModal from "../components/MatchModal";
+import ShopSkeleton from "../components/ShopSkeleton";
+import Icon from "../components/Icon";
+import { IconButton, Tabs, Button } from "../components/ui";
 
 type Direction = "left" | "right" | "up" | "down";
 
 // Structural type for react-tinder-card's imperative ref handle.
-// Declared locally so we don't depend on the library's exported type name.
 interface TinderCardApi {
   swipe: (dir?: Direction) => Promise<void>;
   restoreCard: () => Promise<void>;
 }
 
-// Show a match modal on the Nth "like". README: trigger on the 3rd Like.
+// Show a match toast on the Nth "like" (right or super). Trigger on the 3rd.
 const MATCH_ON_LIKE = 3;
 
 interface Props {
@@ -22,12 +25,15 @@ interface Props {
 }
 
 export default function SwipeView({ onMatch }: Props) {
+  const [tab, setTab] = useState("feed");
   const [currentIndex, setCurrentIndex] = useState(horses.length - 1);
   const [matched, setMatched] = useState<Horse | null>(null);
+  const [superFlash, setSuperFlash] = useState(false);
 
   // Refs mirror state so async swipe callbacks read fresh values.
   const currentIndexRef = useRef(currentIndex);
   const likeCountRef = useRef(0);
+  const superTimer = useRef<number | null>(null);
 
   const childRefs = useMemo(
     () => horses.map(() => createRef<TinderCardApi>()),
@@ -41,13 +47,22 @@ export default function SwipeView({ onMatch }: Props) {
 
   const canSwipe = currentIndex >= 0;
 
+  const registerLike = (index: number) => {
+    likeCountRef.current += 1;
+    if (likeCountRef.current === MATCH_ON_LIKE) {
+      setMatched(horses[index]);
+    }
+  };
+
   const swiped = (direction: Direction, index: number) => {
     updateCurrentIndex(index - 1);
     if (direction === "right") {
-      likeCountRef.current += 1;
-      if (likeCountRef.current === MATCH_ON_LIKE) {
-        setMatched(horses[index]);
-      }
+      registerLike(index);
+    } else if (direction === "up") {
+      registerLike(index);
+      setSuperFlash(true);
+      if (superTimer.current) window.clearTimeout(superTimer.current);
+      superTimer.current = window.setTimeout(() => setSuperFlash(false), 900);
     }
   };
 
@@ -72,75 +87,209 @@ export default function SwipeView({ onMatch }: Props) {
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col bg-gradient-to-b from-rose-50 to-pink-100">
+    <div
+      className="trotr-canvas"
+      style={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        width: "100%",
+      }}
+    >
       {/* Header */}
-      <header className="flex items-center justify-center py-4">
-        <span className="text-2xl font-extrabold text-rose-500">🐎 Neigh-ber</span>
+      <header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "18px 20px 4px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <img src="/brand/trotr-mark.svg" alt="" width={24} height={24} />
+          <span
+            className="trotr-gradient-text"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: "var(--fw-bold)" as CSSProperties["fontWeight"],
+              fontSize: 20,
+              letterSpacing: "var(--ls-tight)",
+            }}
+          >
+            Trotr
+          </span>
+        </div>
+        <div style={{ display: "flex", gap: 14, color: "var(--text-muted)" }}>
+          <Icon name="bell" size={19} />
+          <Icon name="settings" size={19} />
+        </div>
       </header>
 
-      {/* Card stack */}
-      <div className="relative flex flex-1 items-center justify-center px-6">
-        <div className="relative h-[65vh] max-h-[560px] w-full max-w-sm">
-          {currentIndex < 0 && (
-            <div className="flex h-full w-full flex-col items-center justify-center rounded-3xl bg-white/70 text-center shadow-inner">
-              <span className="text-6xl">🐴</span>
-              <p className="mt-4 px-8 text-lg font-semibold text-gray-600">
-                You've met every horse in the stable!
-              </p>
-              <button
-                onClick={restart}
-                className="mt-6 rounded-full bg-rose-500 px-6 py-3 font-bold text-white shadow-lg transition-transform active:scale-95 hover:bg-rose-600"
+      {/* Tabs — Shop is a non-functional skeleton */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "6px 0 10px" }}>
+        <Tabs
+          value={tab}
+          onChange={setTab}
+          items={[
+            { id: "feed", label: "Dating", icon: "flame" },
+            { id: "shop", label: "Shop", icon: "store" },
+          ]}
+        />
+      </div>
+
+      {tab === "shop" ? (
+        <ShopSkeleton />
+      ) : (
+        <>
+          {/* Card deck */}
+          <div
+            style={{
+              position: "relative",
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "4px 18px 0",
+              minHeight: 0,
+            }}
+          >
+            {currentIndex < 0 ? (
+              <div
+                className="trotr-glass"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  width: "100%",
+                  maxWidth: 360,
+                  padding: "48px 28px",
+                  borderRadius: "var(--radius-xl)",
+                }}
               >
-                Start over
-              </button>
-            </div>
-          )}
-
-          {horses.map((horse, index) => (
-            <TinderCard
-              ref={childRefs[index]}
-              className="swipe absolute inset-0"
-              key={horse.id}
-              onSwipe={(dir) => swiped(dir as Direction, index)}
-              onCardLeftScreen={() => outOfFrame(index)}
-              preventSwipe={["up", "down"]}
-            >
-              <div className="h-full w-full select-none overflow-hidden rounded-3xl bg-white shadow-2xl">
-                <div className="relative h-full w-full">
-                  <HorseImage horse={horse} />
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-5 pt-16 text-white">
-                    <h2 className="text-3xl font-extrabold drop-shadow">
-                      {horse.name}
-                      <span className="ml-2 text-2xl font-medium">{horse.age}</span>
-                    </h2>
-                    <p className="mt-1 text-sm text-white/90">{horse.bio}</p>
-                  </div>
+                <span style={{ fontSize: 52 }}>🌾</span>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    color: "var(--text-strong)",
+                    fontSize: 18,
+                    marginTop: 12,
+                  }}
+                >
+                  You&apos;ve trotted through everyone
                 </div>
+                <p style={{ fontSize: 13, lineHeight: 1.5, marginTop: 6, color: "var(--text-muted)" }}>
+                  Check back after the next hay delivery for fresh stallions &amp; mares.
+                </p>
+                <Button onClick={restart} iconLeft="rotateCcw" style={{ marginTop: 20 }}>
+                  Start over
+                </Button>
               </div>
-            </TinderCard>
-          ))}
-        </div>
-      </div>
+            ) : (
+              horses.map((horse, index) => (
+                <TinderCard
+                  ref={childRefs[index]}
+                  className="swipe"
+                  key={horse.id}
+                  onSwipe={(dir) => swiped(dir as Direction, index)}
+                  onCardLeftScreen={() => outOfFrame(index)}
+                  preventSwipe={["down"]}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "0 18px",
+                    }}
+                  >
+                    <ProfileCard horse={horse} style={{ width: "100%", maxWidth: 360 }} />
+                  </div>
+                </TinderCard>
+              ))
+            )}
 
-      {/* Action buttons */}
-      <div className="flex items-center justify-center gap-8 py-6">
-        <button
-          onClick={() => swipe("left")}
-          disabled={!canSwipe}
-          aria-label="Nope"
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow-lg transition-transform active:scale-90 disabled:opacity-40"
-        >
-          ❌
-        </button>
-        <button
-          onClick={() => swipe("right")}
-          disabled={!canSwipe}
-          aria-label="Like"
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow-lg transition-transform active:scale-90 disabled:opacity-40"
-        >
-          💚
-        </button>
-      </div>
+            {/* Super Neigh flash */}
+            {superFlash && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "38%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  padding: "10px 20px",
+                  borderRadius: "var(--radius-pill)",
+                  background: "var(--accent-super)",
+                  color: "#04222e",
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontSize: 22,
+                  boxShadow: "0 10px 40px var(--glow-super)",
+                  animation: "trotr-pop 0.3s var(--ease-spring)",
+                  pointerEvents: "none",
+                  zIndex: 20,
+                }}
+              >
+                *NEIGHHH!*
+              </div>
+            )}
+          </div>
+
+          {/* Action row */}
+          {currentIndex >= 0 && (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 16,
+                  padding: "14px 0 4px",
+                }}
+              >
+                <IconButton
+                  icon="x"
+                  tone="nope"
+                  size="lg"
+                  label="Nope"
+                  disabled={!canSwipe}
+                  onClick={() => swipe("left")}
+                />
+                <IconButton
+                  icon="zap"
+                  tone="super"
+                  label="Super Neigh"
+                  disabled={!canSwipe}
+                  onClick={() => swipe("up")}
+                />
+                <IconButton
+                  icon="heart"
+                  tone="love"
+                  size="lg"
+                  label="Like"
+                  disabled={!canSwipe}
+                  onClick={() => swipe("right")}
+                />
+              </div>
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "6px 0 16px",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
+                  color: "var(--text-faint)",
+                }}
+              >
+                Nope · Super Neigh · Like
+              </div>
+            </>
+          )}
+        </>
+      )}
 
       {matched && (
         <MatchModal
