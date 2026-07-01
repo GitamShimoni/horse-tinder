@@ -1,0 +1,91 @@
+Here is the complete and unified project specification document in English, ready to be fed directly into Claude to generate the design and logic:
+
+🐴 Project Specification: Horse Before Hoes
+1. Project Title & Branding
+Main Project Title & Slogan: Horse Before Hoes
+
+Main Page Subtitle: Horse Before Hoes — A Dating App for Horses
+
+2. Onboarding Questionnaire Flow
+The questionnaire consists of 4 focused, multiple-choice questions designed to profile the user and route them to the correct match:
+
+Question 1: What is your primary goal on this app?
+
+Option A: Looking for a serious, stable relationship in the stable (Long-term).
+
+Option B: Just a casual date for a night race across the fields.
+
+Option C: Looking for a partner for artistic riding (Dressage / Western).
+
+Question 2: What is your favorite treat after a hard day's work?
+
+Option A: A sack of fresh, organic carrots. (This selection directly routes the user to the Match with Trigger).
+
+Option B: A thorough mane brushing and brand new horseshoes.
+
+Option C: Rolling around in the mud without a care in the world.
+
+Question 3: How would you describe your personality?
+
+Option A: Wild, free, and love to run without a bridle.
+
+Option B: Calm, noble, and get along well with humans.
+
+Option C: Competitive, always striving to cross the finish line first.
+
+Question 4: What is your preferred living (or grazing) region?
+
+Option A: Wide open, desert plains.
+
+Option B: A green boutique farm in the central region.
+
+Option C: The Golan Heights (love cold weather and rocky terrain).
+
+3. UI Layout & Architecture
+The interface is centered around a main Card component positioned in the middle of the screen (Centered Layout):
+
+Header (Persistent): Displays the app name and slogan: Horse Before Hoes — A Dating App for Horses.
+
+Body (Dynamic State Content):
+
+Questionnaire Stage: Displays the current question and selection buttons in a clean, modern grid.
+
+Match Stage:
+
+Festive Header: 💘 It's a MATCH!.
+
+Status Line: Trigger snorted your way too!.
+
+Visual Area: A photo component showing two horses facing each other with a heart in the middle (or a styled emoji row: 🐴 ♥ 🐎).
+
+Footer (Match Stage Actions):
+
+Icebreaker Box: A dedicated text container displaying the suggested opening line: "I heard you like carrots — I grow them myself. I can hook you up with a whole sack in exchange for a date."
+
+Action Buttons Row.
+
+4. Functions, State Management & Logic
+A. State Management
+Current Stage Control: A currentStep variable (0 to 3) to determine the visible question, alongside transitions handling the flow from Welcome Screen ➔ Questionnaire ➔ Match Screen.
+
+Answer Tracking: A userAnswers array/object to store the user's selections.
+
+Match Logic: If the user selects Option A for Question 2 ("A sack of fresh, organic carrots"), the system triggers the specific Match screen with Trigger.
+
+B. Core Functions
+loadMatchData(): Fetches the matching horse's profile details (Name: Trigger, Image, Gender).
+
+generateIcebreaker(): Returns a random opening line from a curated database of horse-themed pickup lines (such as the carrot line).
+
+C. User Actions
+onSkip() / Keep Searching:
+
+Logic: Closes the Match screen or resets the questionnaire, moving the user to the next horse in the feed.
+
+Design: Secondary button with a neutral, light gray background.
+
+onSendMessage() / Send This ↗:
+
+Logic: Captures the text from the Icebreaker Box, opens a chat window, and automatically sends the message to Trigger.
+
+Design: Prominent primary button styled in a classic dating-app pink/red color, featuring a small arrow ↗ or a paper airplane icon.
